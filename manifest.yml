@@ -1,5 +1,5 @@
 applications:
- - name: group05_test_pipeline
+ - name: infallible-golick
    memory: 256M
-   host: group05_test_pipeline
+   host: infallible-golick
    buildpack: staticfile_buildpack
