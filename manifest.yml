@@ -1,0 +1,5 @@
+applications:
+ - name: infallible-golick
+   memory: 256M
+   host: infallible-golick
+   buildpack: staticfile_buildpack
