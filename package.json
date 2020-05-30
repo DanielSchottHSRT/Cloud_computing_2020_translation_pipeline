@@ -1,0 +1,23 @@
+{
+  "name": "chat_server",
+  "main": "index.js",
+  "contributors": [
+    "Kai Stahl 763222",
+    "Oleg Semenov 764419",
+    "Daniel Schott 763217"
+  ],
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "description": "Basic chat server application to later deploy on an IBM cloud server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ibm-watson": "^5.5.0"
+  }
+}
