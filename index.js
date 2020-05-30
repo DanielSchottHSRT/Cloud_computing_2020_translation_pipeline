@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // setup root handler that calls index.html when website is called
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/public/html/index.html');
 });
 
 // listen on set port

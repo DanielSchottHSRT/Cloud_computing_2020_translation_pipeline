@@ -1,7 +1,7 @@
 function start_socket_listeners(){
 
   // load in socket
-    let socket = io();
+  var socket = io();
 
 
 
@@ -34,6 +34,6 @@ function start_socket_listeners(){
     $('#p_translated_text').text(translation_result.translations[0].translation);
     $('#p_identified_language').text(translation_result.detect_language);
     $('#p_confidence').text(translation_result.confidence);
-    
+
   });
 }
