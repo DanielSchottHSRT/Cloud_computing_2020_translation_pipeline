@@ -1,3 +1,31 @@
 body{
   background-color:lightgrey;
 }
+
+#translator_wrapper{
+  /*appearance*/
+  color:white;
+  background-color: #003d4d;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px 5px;
+  height: 40%;
+  width: 35%;
+  padding: 2em 2em 2em 2em;
+
+  /* position to middle of screen*/
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+label{
+  display:inline-block;
+}
+p{
+  display:inline-block;
+}
+
+
+#btn_translate_text{
+  margin:2em 0em 0em 40%;
+}
