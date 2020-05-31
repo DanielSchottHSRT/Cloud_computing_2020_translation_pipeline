@@ -1,5 +1,5 @@
+---
 applications:
- - name: infallible-golick
-   memory: 256M
-   host: infallible-golick
-   buildpack: staticfile_buildpack
+- name: optimistic-poitras
+  memory: 512M
+  instances: 1

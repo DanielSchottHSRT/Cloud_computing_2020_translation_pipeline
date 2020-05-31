@@ -74,13 +74,9 @@ function identify_language(params) {
 
           console.log("LANGUAGES : ",JSON.stringify(identifiedLanguages, null, 2));
 
-          // search langueage with highes confidence score
-          identifiedLanguages.result.languages.forEach(language => {
-              if(language.confidence > highestConfidenceScore){
-                highestConfidenceScore = language.confidence;
-                languageWithHighestScore = language.language;
-              }
-          });
+          // get language with highest confidence score
+          highestConfidenceScore = identifiedLanguages.result.languages[0].confidence;
+          languageWithHighestScore = identifiedLanguages.result.languages[0].language;
 
           // resolve parameters
           resolve({
@@ -94,6 +90,7 @@ function identify_language(params) {
             },
             headers: { 'Content-Type': 'application/json' }
           });
+
 
             // error handling
         }).catch(err => {

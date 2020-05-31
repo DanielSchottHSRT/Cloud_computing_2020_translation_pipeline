@@ -3,6 +3,8 @@ function start_socket_listeners(){
   // load in socket
   var socket = io();
 
+
+
   // button to start a text translation is clicked
   $('#btn_translate_text').click(function () {
   //prevent page reloading
@@ -28,7 +30,7 @@ function start_socket_listeners(){
 
   socket.on('text_translated', function(translation_result){
     console.log(translation_result);
-  
+
     $('#p_translated_text').text(translation_result.translations[0].translation);
     $('#p_identified_language').text(translation_result.detect_language);
     $('#p_confidence').text(translation_result.confidence);
