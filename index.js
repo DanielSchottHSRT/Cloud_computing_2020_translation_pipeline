@@ -1,6 +1,14 @@
 const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
 const { IamAuthenticator } = require('ibm-watson/auth');
 
+
+// include modules
+var express = require('express');
+var app = express();
+var http = require('http').createServer(app);
+var io = require('socket.io').listen(http);
+var path = require('path');
+
 // initialize translator
 const languageTranslator = new LanguageTranslatorV3({
 version: '2020-05-28',
@@ -12,12 +20,6 @@ authenticator: new IamAuthenticator(
 });
 
 const defaultLanguage = 'en';
-// include modules
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
-var path = require('path');
-var express = require('express');
 
 var highestConfidenceScore = 0.0;
 var languageWithHighestScore ='';
@@ -56,13 +58,9 @@ function getTheErrorResponse(errorMessage, defaultLanguage) {
 
 function identify_language(params) {
 
-  console.log("PARAMS detect val", params);
   /*
    * The default language to choose in case of an error
    */
-
-
-
 
   return new Promise(function (resolve, reject) {
 
@@ -71,15 +69,12 @@ function identify_language(params) {
       // text to translate present
       if (typeof params.text === 'string' || params.text instanceof String) {
 
-        console.log("text is string");
         // identify language of translateable text
         languageTranslator.identify(params).then(identifiedLanguages => {
 
           console.log("LANGUAGES : ",JSON.stringify(identifiedLanguages, null, 2));
 
           // search langueage with highes confidence score
-          console.log("result", identifiedLanguages.result.languages);
-
           identifiedLanguages.result.languages.forEach(language => {
               if(language.confidence > highestConfidenceScore){
                 highestConfidenceScore = language.confidence;
@@ -87,6 +82,7 @@ function identify_language(params) {
               }
           });
 
+          // resolve parameters
           resolve({
             statusCode: 200,
             body: {
@@ -99,14 +95,13 @@ function identify_language(params) {
             headers: { 'Content-Type': 'application/json' }
           });
 
-
+            // error handling
         }).catch(err => {
           console.error('Error while initializing the AI service', err);
           resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
         });
-
-
       }
+        // error handling
     } catch (err) {
       console.error('Error while initializing the AI service', err);
       resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
@@ -116,21 +111,19 @@ function identify_language(params) {
 
 function translate_text(params) {
 
-  /*
-   * The default language to choose in case of an error
-   */
   return new Promise(function (resolve, reject) {
 
     try {
-      console.log("entered translate TEXT ::::::::::::::::::");
+
       // needed params present (text, source, target)
       if ((typeof params.text === 'string' || params.text instanceof String)
        && params.target != null && params.source != null ){
-        console.log("entered translate TEXT is string ::::::::::::::::::");
+
         // translate text
         languageTranslator.translate(params).then(translationResult => {
           console.log("translationResult",JSON.stringify(translationResult, null, 2));
 
+          // resolve parameters
           resolve({
             statusCode: 200,
             body: {
@@ -140,12 +133,14 @@ function translate_text(params) {
             },
             headers: { 'Content-Type': 'application/json' }
           });
-
+            // error handling
         }).catch(err => {
           console.error('Error while initializing the AI service', err);
           resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
         });
     }
+
+      // error handling
     } catch (err) {
       console.error('Error while initializing the AI service', err);
       resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
@@ -156,13 +151,21 @@ function translate_text(params) {
 // setup socket that waits on new connection
 io.on('connection', (socket) => {
 
+  // event fired when the button to translate a text is pressed
+  // (params) contain text: String(text that will be translated)
   socket.on('btn_translate_text_pressed', (params) => {
 
+    // get language of input text
     identify_language(params).then(function(result){
 
+      // translate text to given target language
       translate_text(result.body).then(function(translation_result){
+
+        // add additional info to result
         translation_result.body.detect_language =  languageWithHighestScore;
         translation_result.body.confidence = highestConfidenceScore;
+
+        // send back translated text to client
         socket.emit("text_translated", translation_result.body);
       });
     });
