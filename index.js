@@ -3,11 +3,11 @@ const { IamAuthenticator } = require('ibm-watson/auth');
 
 
 // include modules
-var express = require('express');
-var app = express();
+var app = require('express')();
 var http = require('http').createServer(app);
-var io = require('socket.io').listen(http);
+var io = require('socket.io')(http);
 var path = require('path');
+var express = require('express');
 
 // initialize translator
 const languageTranslator = new LanguageTranslatorV3({
@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // setup root handler that calls index.html when website is called
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/public/html/index.html');
 });
 
 // listen on set port
