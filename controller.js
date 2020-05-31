@@ -1,5 +1,5 @@
 function start_socket_listeners(){
-  
+
   // load in socket
   var socket = io();
 
